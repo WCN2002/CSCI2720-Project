@@ -1,0 +1,110 @@
+.database-container {
+    display: grid;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .database-switcher, .view-switcher {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+  }
+  
+  .database-switcher button, .view-switcher button {
+    margin: 10 10px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .database-switcher button.active, .view-switcher button.active {
+    border-bottom: 4px solid darkslategray;
+    transition: all 0.2s ease-out;
+  }
+  
+  .create-form, .update-form, .list-container {
+    border-radius: 8px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form input, form select {
+    margin-bottom: 10px;
+    padding: 8px;
+  }
+  
+  form button {
+    padding: 10px;
+    background-color: darkslategray;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  form button:hover {
+    background-color: lightslategray;
+    transition: all 0.2s ease-out;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  table button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  body.dark-mode .database-switcher button, 
+body.dark-mode .view-switcher button {
+  background-color: #333;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode .database-switcher button.active, 
+body.dark-mode .view-switcher button.active {
+  background-color: #444;
+  border-bottom: 4px solid #bb86fc; /* Using a nice accent color for active state */
+}
+
+body.dark-mode .database-switcher button:hover, 
+body.dark-mode .view-switcher button:hover {
+  background-color: #444;
+}
+
+body.dark-mode form button {
+  background-color: #bb86fc;
+  color: #000;
+}
+
+body.dark-mode form button:hover {
+  background-color: #9966cc;
+}
+
+body.dark-mode table {
+  color: #fff;
+}
+
+body.dark-mode table th, 
+body.dark-mode table td {
+  border-color: #444;
+}
+
+body.dark-mode table button {
+  background-color: #ff4d4d;
+  color: #fff;
+}

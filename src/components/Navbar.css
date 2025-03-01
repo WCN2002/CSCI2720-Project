@@ -1,0 +1,196 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.navbar {
+  background: darkslategrey;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  padding: 0 20px; /* Add some padding for smaller screens */
+  box-sizing: border-box;
+  left: 0; /* Ensure it starts from the very left */
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between; /* Distribute space between logo and menu */
+  align-items: center;
+  height: 80px;
+  width: 100%; /* Full width */
+  padding: 0 20px; /* Padding for content inside the navbar */
+  box-sizing: border-box;
+  max-width: none; /* Remove any restriction on max-width */
+}
+
+.navbar-logo {
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Prevent logo from wrapping */
+}
+
+.fa-typo3 {
+  margin-left: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  text-align: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+
+.nav-item {
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+/* Specifically target the last list item (login/logout) */
+.nav-menu > li:last-child {
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  transition: all 0.2s ease-out;
+}
+
+.nav-links:hover {
+  border-bottom: 4px solid #fff;
+}
+
+.menu-icon {
+  display: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 960px) {
+  .navbar {
+    padding: 0 0px;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+    position: absolute;
+    top: 80px;
+    left: -100%;
+    opacity: 0;
+    transition: all 0.5s ease;
+    background: #242222;
+  }
+
+  .nav-menu.active {
+    left: 0;
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .nav-item {
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav-links {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    display: table;
+  }
+
+  .nav-links:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-bottom: none;
+  }
+
+  .menu-icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    font-size: 1.8rem;
+  }
+}
+
+/* Additional Responsiveness for Very Small Screens */
+@media screen and (max-width: 600px) {
+  .navbar {
+    height: 60px;
+  }
+
+  .navbar-container {
+    height: 60px;
+  }
+
+  .navbar-logo {
+    font-size: 1.2rem;
+  }
+
+  .nav-menu {
+    top: 60px;
+  }
+
+  .nav-links {
+    font-size: 0.9rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .menu-icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Ensure Flexbox Responsiveness */
+@media screen and (max-width: 480px) {
+  .navbar-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .navbar-logo {
+    margin-bottom: 10px;
+  }
+
+  .nav-menu {
+    width: 100%;
+    top: 120px; /* Adjust for logo and potential additional elements */
+  }
+}

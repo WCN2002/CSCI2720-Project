@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protected Route Test</title>
+  </head>
+  <body>
+    <h1>Protected Route Test</h1>
+    <button id="fetchButton">Fetch Protected Data</button>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch("http://localhost:5000/logout", {
+              method: "POST",
+              credentials: "include", // Include cookies in the request
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              document.getElementById("result").textContent = data.message;
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.message}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

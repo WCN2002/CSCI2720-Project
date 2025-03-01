@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update User</title>
+  </head>
+  <body>
+    <h1>Update User</h1>
+    <form id="updateUserForm">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        value="testuser"
+        required
+      />
+      <br />
+      <label for="password">New Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        value="newpassword123"
+      />
+      <br />
+      <label for="type">Type:</label>
+      <select id="type" name="type">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <br />
+      <button type="submit">Update User</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("updateUserForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const type = document.getElementById("type").value;
+
+          try {
+            const response = await fetch(
+              `http://localhost:5000/user/${username}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include", // Include cookies in the request
+                body: JSON.stringify({ password, type }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+              document.getElementById("result").textContent = data.message;
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.message}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

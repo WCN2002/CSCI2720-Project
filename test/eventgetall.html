@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get All Events</title>
+  </head>
+  <body>
+    <h1>Get All Events</h1>
+    <button id="fetchButton">Fetch All Events</button>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch("http://localhost:5000/event/getall", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include", // Include cookies in the request
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              const resultDiv = document.getElementById("result");
+              resultDiv.innerHTML = ""; // Clear previous results
+              data.forEach((event) => {
+                const eventDiv = document.createElement("div");
+                eventDiv.textContent = `Event ID: ${event.event_id}, Location: ${event.location}, Name: ${event.name}, Date: ${event.date}`;
+                resultDiv.appendChild(eventDiv);
+              });
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.message}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toggle Favorite Event</title>
+  </head>
+  <body>
+    <h1>Toggle Favorite Event</h1>
+    <form id="toggleFavEventForm">
+      <label for="event_id">Event ID:</label>
+      <input type="text" id="event_id" name="event_id" required />
+      <br />
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <br />
+      <button type="submit">Toggle Favorite</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("toggleFavEventForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const event_id = document.getElementById("event_id").value;
+          const username = document.getElementById("username").value;
+
+          try {
+            const response = await fetch(
+              "http://localhost:5000/event/toggle_fav",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include", // Include cookies in the request
+                body: JSON.stringify({ event_id, username }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+              document.getElementById("result").textContent = data.message;
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.message}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

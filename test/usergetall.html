@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get All Users</title>
+  </head>
+  <body>
+    <h1>Get All Users</h1>
+    <button id="fetchButton">Fetch All Users</button>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch("http://localhost:5000/user/getall", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include", // Include cookies in the request
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              const resultDiv = document.getElementById("result");
+              resultDiv.innerHTML = ""; // Clear previous results
+              data.forEach((user) => {
+                const userDiv = document.createElement("div");
+                userDiv.textContent = `Username: ${user.username}, Type: ${user.type}, fav_locations: ${user.fav_locations}, fav_events: ${user.fav_events}`;
+                resultDiv.appendChild(userDiv);
+              });
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.error}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

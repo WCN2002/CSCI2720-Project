@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Comment</title>
+  </head>
+  <body>
+    <h1>Add Comment</h1>
+    <form id="addCommentForm">
+      <label for="location_id">Location ID:</label>
+      <input type="text" id="location_id" name="location_id" required />
+      <br />
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <br />
+      <label for="comment">Comment:</label>
+      <textarea id="comment" name="comment" required></textarea>
+      <br />
+      <button type="submit">Add Comment</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("addCommentForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const location_id = document.getElementById("location_id").value;
+          const username = document.getElementById("username").value;
+          const comment = document.getElementById("comment").value;
+
+          try {
+            const response = await fetch(
+              "http://localhost:5000/location/addcomment",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include", // Include cookies in the request
+                body: JSON.stringify({ location_id, username, comment }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+              document.getElementById("result").textContent = data.message;
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.message}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

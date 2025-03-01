@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Event</title>
+  </head>
+  <body>
+    <h1>Update Event</h1>
+    <form id="updateEventForm">
+      <label for="event_id">Event ID:</label>
+      <input
+        type="text"
+        id="event_id"
+        name="event_id"
+        value="166329"
+        required
+      />
+      <br />
+      <label for="name">Event Name:</label>
+      <input type="text" id="name" name="name" value="Updated Event Name" />
+      <br />
+      <label for="loc_id">Location ID:</label>
+      <input type="text" id="loc_id" name="loc_id" value="363" />
+      <br />
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" value="2023-12-31" />
+      <br />
+      <label for="description">Description:</label>
+      <textarea id="description" name="description">
+Updated event description</textarea
+      >
+      <br />
+      <label for="organizer">Organizer:</label>
+      <input
+        type="text"
+        id="organizer"
+        name="organizer"
+        value="Updated Organizer"
+      />
+      <br />
+      <label for="price">Price:</label>
+      <input type="text" id="price" name="price" value="200" />
+      <br />
+      <button type="submit">Update Event</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("updateEventForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const event_id = document.getElementById("event_id").value;
+          const name = document.getElementById("name").value;
+          const loc_id = document.getElementById("loc_id").value;
+          const date = document.getElementById("date").value;
+          const description = document.getElementById("description").value;
+          const organizer = document.getElementById("organizer").value;
+          const price = document.getElementById("price").value;
+
+          try {
+            const response = await fetch(
+              `http://localhost:5000/event/${event_id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include", // Include cookies in the request
+                body: JSON.stringify({
+                  event_id,
+                  name,
+                  loc_id,
+                  date: String(date),
+                  description,
+                  organizer,
+                  price,
+                }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+              document.getElementById("result").textContent = data.message;
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.message}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

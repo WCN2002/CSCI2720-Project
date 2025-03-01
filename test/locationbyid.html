@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Location</title>
+  </head>
+  <body>
+    <h1>Get Location</h1>
+    <form id="getLocationForm">
+      <label for="location_id">Location ID:</label>
+      <input
+        type="text"
+        id="location_id"
+        name="location_id"
+        value="sample-location-id"
+        required
+      />
+      <br />
+      <button type="submit">Fetch Location</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("getLocationForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const location_id = document.getElementById("location_id").value;
+
+          try {
+            const response = await fetch(
+              `http://localhost:5000/location/${location_id}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include", // Include cookies in the request
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+              const resultDiv = document.getElementById("result");
+              resultDiv.innerHTML = `
+                        <h3>${data.name}</h3>
+                        <p>Address: ${data.address}</p>
+                        <p>Comments:</p>
+                        <ul>
+                            ${data.comments
+                              .map(
+                                (comment) =>
+                                  `<li>${comment.user.username}: ${comment.text}</li>`
+                              )
+                              .join("")}
+                        </ul>
+                        <p>Hosted Events:</p>
+                        <ul>
+                            ${data.hosted_event
+                              .map(
+                                (event) =>
+                                  `<li>${event.name} on ${new Date(
+                                    event.date
+                                  ).toLocaleDateString()}</li>`
+                              )
+                              .join("")}
+                        </ul>
+                    `;
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.error}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>

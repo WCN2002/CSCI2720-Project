@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Locations</title>
+  </head>
+  <body>
+    <h1>Get Locations</h1>
+    <button id="fetchButton">Fetch Locations</button>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch("http://localhost:5000/locations", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include", // Include cookies in the request
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              const resultDiv = document.getElementById("result");
+              resultDiv.innerHTML = ""; // Clear previous results
+              data.forEach((location) => {
+                const locationDiv = document.createElement("div");
+                locationDiv.innerHTML = `
+                            <h3>${location.name}</h3>
+                            <p>Coordinate: ${location.coordinate.latitude}, ${
+                  location.coordinate.longitude
+                }</p>
+                            <p>Comments:</p>
+                            <ul>
+                                ${location.comments
+                                  .map(
+                                    (comment) =>
+                                      `<li>${comment.user.username}: ${comment.text}</li>`
+                                  )
+                                  .join("")}
+                            </ul>
+                            <p>Hosted Events:</p>
+                            <ul>
+                                ${location.hosted_event
+                                  .map(
+                                    (event) =>
+                                      `<li>${event.name} on ${new Date(
+                                        event.date
+                                      ).toLocaleDateString()}</li>`
+                                  )
+                                  .join("")}
+                            </ul>
+                        `;
+                resultDiv.appendChild(locationDiv);
+              });
+            } else {
+              document.getElementById(
+                "result"
+              ).textContent = `Error: ${data.error}`;
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("result").textContent =
+              "An error occurred. Please try again.";
+          }
+        });
+    </script>
+  </body>
+</html>
